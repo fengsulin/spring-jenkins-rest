@@ -1,0 +1,17 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: @project.artifactId@
+management:
+  server:
+    port: 8081
+jenkins:
+  username: xxx
+  token: xxx
+  url: http://xxxx:8080
+file:
+  upload:
+    path: /ac/jenkins/plugins
+    allowTypes:
+      - application/octet-stream
