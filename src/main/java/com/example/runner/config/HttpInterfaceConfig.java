@@ -1,21 +1,33 @@
 package com.example.runner.config;
 
+import com.example.runner.auth.AuthenticationType;
 import com.example.runner.auth.IAuth;
+import com.example.runner.auth.JenkinsAuthentication;
+import com.example.runner.constants.HeadersConstants;
+import com.example.runner.domain.crumb.Crumb;
 import com.example.runner.remote.*;
 import com.example.runner.resolver.BodyParserArgumentResolver;
 import com.example.runner.resolver.PathParserArgumentResolver;
 import jakarta.annotation.Resource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.core.ReactiveAdapterRegistry;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.reactive.function.BodyInserters;
 import org.springframework.web.reactive.function.client.ClientRequest;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.reactive.function.client.support.WebClientAdapter;
 import org.springframework.web.service.invoker.HttpServiceProxyFactory;
 import org.springframework.web.util.DefaultUriBuilderFactory;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author: FSL
@@ -23,24 +35,49 @@ import java.time.Duration;
  * @description: TODO
  */
 @Configuration
+@Lazy
 public class HttpInterfaceConfig {
 
     @Resource
-    private IAuth iAuth;
-
-    @Bean
+    private JenkinsAuthentication auth;
+    @Resource
+    private JenkinsProperties jenkinsProperties;
+    private static final String CRUMB_HEADER = "Jenkins-Crumb";
+    @Bean("webClient")
     public WebClient webClient(){
-        DefaultUriBuilderFactory uriBuilderFactory = new DefaultUriBuilderFactory(iAuth.getBaseUrl());
+        DefaultUriBuilderFactory uriBuilderFactory = new DefaultUriBuilderFactory(jenkinsProperties.getUrl());
         uriBuilderFactory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.NONE);
         return WebClient.builder()
                 .defaultHeader("source","http-interface")
                 .uriBuilderFactory(uriBuilderFactory)   // 为了兼容路径参数为多级目录，设置设置编码格式为NONE
                 .codecs(item -> item.defaultCodecs().maxInMemorySize((1 << 20) * 10))    // 设置请求缓存buffer大小
                 .filter((request, next) -> {
-                    ClientRequest filtered = ClientRequest.from(request)
-                            .header(HttpHeaders.AUTHORIZATION,iAuth.getAuth())
-                            .build();
-                    return next.exchange(filtered);
+                    ClientRequest.Builder builder = null;
+                    final String authHeader = auth.authType().getAuthScheme() + " " + auth.authValue();
+                    if (auth.authType() == AuthenticationType.UsernameApiToken || auth.authType() == AuthenticationType.UsernamePassword){
+                        builder = ClientRequest.from(request)
+                                .header(HttpHeaders.AUTHORIZATION, authHeader);
+
+                    }
+                    if(request.method().name().equalsIgnoreCase("POST") &&
+                            (auth.authType() == AuthenticationType.Anonymous || auth.authType() == AuthenticationType.UsernamePassword)){
+                        ResponseEntity<String> entity = WebClient.create(jenkinsProperties.getUrl())
+                                .get()
+                                .uri("/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,\":\",//crumb)")
+                                .header(HttpHeaders.AUTHORIZATION, authHeader)
+                                .retrieve()
+                                .toEntity(String.class)
+                                .block();
+                        assert entity != null;
+                        List<String> strings = entity.getHeaders().get(HttpHeaders.SET_COOKIE);
+                        assert strings != null;
+                        String jenkinsSession = strings.stream().filter(s -> s.startsWith(HeadersConstants.JENKINS_COOKIES_JSESSIONID)).findFirst().orElse("");
+                        String first = jenkinsSession.split(";")[0];
+                        builder.body(BodyInserters.fromFormData(CRUMB_HEADER,crumbValue(Objects.requireNonNull(entity.getBody()))))
+                                .header(HttpHeaders.COOKIE,first);
+                    }
+                    assert builder != null;
+                    return next.exchange(builder.build());
                 }).build();
     }
 
@@ -109,4 +146,8 @@ public class HttpInterfaceConfig {
         return factory.createClient(StatisticsApi.class);
     }
 
+    private static String crumbValue(String crumb){
+        String value = crumb.split(":")[1];
+        return value;
+    }
 }

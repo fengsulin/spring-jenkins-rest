@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.multipart.FilePart;
@@ -20,6 +21,7 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/pluginManager")
+@Lazy
 public class PluginsController {
 
     private final PluginManagerApi pluginManagerApi;

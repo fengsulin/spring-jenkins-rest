@@ -21,7 +21,7 @@ public class PathParserArgumentResolver extends AbstractNamedValueArgumentResolv
         PathVariable ant = null;
         PathParser ann = null;
 
-        if (ans == null || ans.length <= 0) return null;
+        if (ans == null || ans.length == 0) return null;
         for (Annotation annotation : ans){
             if (annotation instanceof PathVariable){
                 ant = (PathVariable) annotation;
@@ -38,8 +38,13 @@ public class PathParserArgumentResolver extends AbstractNamedValueArgumentResolv
 
     @Override
     protected void addRequestValue(String name, Object value, MethodParameter parameter, HttpRequestValues.Builder requestValues) {
+        PathParser pathParser = parameter.getParameterAnnotation(PathParser.class);
+        if (pathParser != null){
+            requestValues.setUriVariable(name, parsePath((String) value));
+        }else {
+            requestValues.setUriVariable(name, (String) value);
+        }
 
-        requestValues.setUriVariable(name, parsePath((String) value));
     }
 
     /**

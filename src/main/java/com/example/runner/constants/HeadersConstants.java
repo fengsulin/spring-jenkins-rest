@@ -14,4 +14,6 @@ public class HeadersConstants {
     public static final String X_JENKINS_SESSION = "X-Jenkins-Session";
     public static final String SERVER = "Server";
     public static final String X_SSH_ENDPOINT = "X-SSH-Endpoint";
+    public static final String JENKINS_COOKIES_JSESSIONID = "JSESSIONID";
+
 }

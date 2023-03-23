@@ -7,9 +7,13 @@ management:
   server:
     port: 8081
 jenkins:
-  username: xxx
-  token: xxx
-  url: http://xxxx:8080
+  usernamePassword: true
+  usernameApiToken: false
+  anonymous: false
+  username: fenxx
+#  credential: 11def70e9xx9a
+  url: http://10.xx080
+  credential: SbxxsQh
 file:
   upload:
     path: /ac/jenkins/plugins

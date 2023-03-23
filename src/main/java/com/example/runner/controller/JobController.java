@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
@@ -29,6 +30,7 @@ import java.util.Objects;
 @RequestMapping("/job")
 @AllArgsConstructor
 @Slf4j
+@Lazy
 public class JobController {
     private final JobsApi jobsApi;
 
@@ -44,13 +46,11 @@ public class JobController {
 
     // TODO 待调试
     @GetMapping("/all")
-    @Operation(summary = "获取所有job")
-    @Parameters({
-            @Parameter(required = false,name = "folderPath",description = "单级或多级目录"),
-    })
+    @Operation(summary = "获取目录及子目录的所有job")
+    @Parameter(required = false,name = "folderPath",description = "单级或多级目录")
     public List<Job> getAllJob(@RequestParam(required = false,defaultValue = "") String folderPath){
         JobList jobList = jobsApi.jobList(folderPath, 1, "jobs[name,fullName,url]");
-        if (jobList == null || jobList.getJobs() == null || jobList.getJobs().size() <= 0) return Collections.emptyList();
+        if (jobList == null || jobList.getJobs() == null || jobList.getJobs().size() == 0) return Collections.emptyList();
         return exchangeJob(jobList.getJobs());
     }
 

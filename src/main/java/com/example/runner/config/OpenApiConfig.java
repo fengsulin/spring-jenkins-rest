@@ -24,7 +24,7 @@ public class OpenApiConfig {
     @Bean
     public GroupedOpenApi helloApi(){
         return GroupedOpenApi.builder()
-                .group("hello")
+                .group("Jenkins API")
                 .packagesToScan("com.example.runner.controller")
                 .build();
     }

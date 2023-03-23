@@ -1,6 +1,7 @@
 package com.example.runner.config;
 
 import com.example.runner.auth.IAuth;
+import com.example.runner.auth.JenkinsAuthentication;
 import com.example.runner.auth.impl.BasicAuth;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +15,21 @@ public class AuthConfig {
     }
 
     @Bean
-    public IAuth auth(){
-        return new BasicAuth(jenkinsProperties.getUsername(), jenkinsProperties.getToken(), jenkinsProperties.getUrl());
+    public JenkinsAuthentication jenkinsAuthentication(){
+        String credentials = jenkinsProperties.getUsername() + ":" +jenkinsProperties.getCredential();
+        JenkinsAuthentication authentication = null;
+        if (jenkinsProperties.isUsernameApiToken()){
+            authentication = JenkinsAuthentication.builder()
+                    .apiToken(credentials)
+                    .build();
+        } else if (jenkinsProperties.isUsernamePassword()) {
+            authentication = JenkinsAuthentication.builder()
+                    .credentials(credentials)
+                    .build();
+        }else {
+            authentication = JenkinsAuthentication.builder()
+                    .build();
+        }
+        return authentication;
     }
 }
