@@ -1,8 +1,8 @@
 package com.example.ci.controller;
 
+import com.example.ci.api.QueueApi;
 import com.example.ci.domain.queue.QueueItem;
 import com.example.ci.domain.queue.QueueItems;
-import com.example.ci.api.QueueApi;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

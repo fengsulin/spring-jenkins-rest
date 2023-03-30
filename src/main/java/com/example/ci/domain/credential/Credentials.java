@@ -1,6 +1,5 @@
 package com.example.ci.domain.credential;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Data;
 
 import java.util.List;

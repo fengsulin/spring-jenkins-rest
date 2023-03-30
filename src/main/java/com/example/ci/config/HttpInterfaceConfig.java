@@ -1,9 +1,9 @@
 package com.example.ci.config;
 
+import com.example.ci.api.*;
 import com.example.ci.auth.AuthenticationType;
 import com.example.ci.auth.JenkinsAuthentication;
 import com.example.ci.constants.HeadersConstants;
-import com.example.ci.api.*;
 import com.example.ci.resolver.BodyParserArgumentResolver;
 import com.example.ci.resolver.PathParserArgumentResolver;
 import jakarta.annotation.Resource;

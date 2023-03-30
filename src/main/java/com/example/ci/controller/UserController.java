@@ -1,8 +1,8 @@
 package com.example.ci.controller;
 
+import com.example.ci.api.UserApi;
 import com.example.ci.domain.user.ApiToken;
 import com.example.ci.domain.user.User;
-import com.example.ci.api.UserApi;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

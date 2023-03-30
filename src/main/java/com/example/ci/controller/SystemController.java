@@ -1,10 +1,10 @@
 package com.example.ci.controller;
 
+import com.example.ci.api.StatisticsApi;
+import com.example.ci.api.SystemApi;
 import com.example.ci.constants.HeadersConstants;
 import com.example.ci.domain.statistics.OverallLoad;
 import com.example.ci.domain.system.SystemInfo;
-import com.example.ci.api.StatisticsApi;
-import com.example.ci.api.SystemApi;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;

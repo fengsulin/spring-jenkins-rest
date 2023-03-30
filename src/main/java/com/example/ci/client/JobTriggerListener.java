@@ -1,17 +1,12 @@
 package com.example.ci.client;
 
 import com.example.ci.api.JobsApi;
-import com.example.ci.api.QueueApi;
 import com.example.ci.controller.JobController;
 import com.example.ci.domain.job.BuildInfo;
-import com.example.ci.domain.queue.QueueItems;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-
-import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * @author: FSL

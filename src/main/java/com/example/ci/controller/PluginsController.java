@@ -1,7 +1,7 @@
 package com.example.ci.controller;
 
-import com.example.ci.domain.plugins.Plugins;
 import com.example.ci.api.PluginManagerApi;
+import com.example.ci.domain.plugins.Plugins;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;

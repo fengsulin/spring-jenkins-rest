@@ -2,20 +2,15 @@ package com.example.ci.controller;
 
 import com.example.ci.api.CredentialsApi;
 import com.example.ci.common.RequestUtils;
-import com.example.ci.constants.CredentialType;
-import com.example.ci.domain.credential.BaseCredential;
 import com.example.ci.domain.credential.Credentials;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 
 /**
