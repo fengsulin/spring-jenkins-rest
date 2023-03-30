@@ -9,15 +9,17 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.example.runner</groupId>
-    <artifactId>spring-jenkins-rest</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <name>spring-jenkins-rest</name>
-    <description>spring-jenkins-rest</description>
+    <groupId>com.example.ci</groupId>
+    <artifactId>jenkins-spring-boot-starter</artifactId>
+    <version>0.0.4</version>
+    <name>jenkins-spring-boot-starter</name>
+    <description>jenkins-spring-boot-starter</description>
 
     <properties>
         <java.version>17</java.version>
-        <openapi.version>2.0.3</openapi.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <openapi.version>2.0.4</openapi.version>
+        <fastjson.version>2.0.25</fastjson.version>
     </properties>
 
     <dependencies>
@@ -55,21 +57,34 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
         </dependency>
-        <!-- open api 接口调测 -->
+        <!-- openapi 接口调测 -->
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
             <version>${openapi.version}</version>
         </dependency>
-        <!-- quartz定时调度 -->
+        <!-- fastjson转换 -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>${fastjson.version}</version>
+        </dependency>
+        <!--validation配置-->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-quartz</artifactId>
+            <artifactId>spring-boot-starter-validation</artifactId>
         </dependency>
     </dependencies>
 
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
