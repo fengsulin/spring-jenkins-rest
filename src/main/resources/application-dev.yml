@@ -1,0 +1,37 @@
+server:
+  port: 10001
+spring:
+  application:
+    name: @project.artifactId@
+management:
+  server:
+    port: 10001
+jenkins:
+  usernamePassword: false
+  usernameApiToken: true
+  anonymous: false
+  username: f
+  credential: 11d0e89a
+  url: http::8080
+#  credential: SbU5gfdQ7sQh
+# file用于手动上传插件配置 TODO 由于web和webflux框架对应上传文件实现不一样，暂未解决
+file:
+  upload:
+    allowTypes:
+      - application/octet-stream
+# 生产环境要禁用swagger
+springdoc:
+  swagger-ui:
+    path: /doc.html
+  api-docs:
+    enabled: true
+executor:
+  core-pool-size: 32
+  max-pool-size: 100
+  keep_alive-time: 60
+  queue-capacity: 100
+  thread-prefix: Job-ThreadAsync-
+logging:
+  level:
+    com.example.ci.client: debug
+    com.example.ci.controller: debug
