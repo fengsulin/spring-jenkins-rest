@@ -45,9 +45,9 @@ public class CredentialController {
     }
 
     @PostMapping(value = "/create")
-    @Operation(summary = "新建凭证")
+    @Operation(summary = "新建凭证接口")
     @Parameters({
-            @Parameter(name = "code",required = true,description = "凭证类型码,1-用户名密码，2-secret-text，3-apiToken"),
+            @Parameter(name = "code",required = true,description = "凭证类型码，需要根据不同类型传递不同的凭证实体信息,1-用户名密码，2-secret-text，3-apiToken"),
     })
     public boolean createCredential(int code,HttpServletRequest request){
         // opType为操作类型，1为新建凭证，其他为更新
@@ -60,7 +60,7 @@ public class CredentialController {
     }
 
     @PostMapping(value = "/{id}/update")
-    @Operation(summary = "更新凭证")
+    @Operation(summary = "更新凭证接口")
     @Parameters({
             @Parameter(name = "code",required = true,description = "凭证类型码,1-用户名密码，2-secret-text，3-apiToken"),
     })
